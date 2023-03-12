@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    private static Scanner scanner = new Scanner(System.in);
-    private static List<User> users = new ArrayList<>();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final List<User> users = new ArrayList<>();
 
     public static void main(String[] args) {
         while (start() != 7) ;
@@ -47,29 +47,29 @@ public class App {
     }
 
     private static void exit() {
+        System.out.println("-= Выход =-");
     }
 
     private static void editPassword() {
-    }
-
-    private static void editLogin() {
-        System.out.println("-= редактирование пользователя =-");
+        System.out.println("-= редактирование пароля пользователя =-");
         String userLogin = getLogin();
-        if (findUser(userLogin) != null) {
+        int index;
+        if ((index = findUserReturnIndex(userLogin)) >= 0) {
+            users.get(index).setPassword(getPassword());
         } else {
             System.out.println("Нет такого пользователя.");
         }
     }
 
-    private static User isUserPresent() {
-        System.out.println("-= Проверка существующего пользователя =-");
-        String login = getLogin();
-        if (users.contains(login)) {
-            System.out.println("Пользователь существует");
+    private static void editLogin() {
+        System.out.println("-= редактирование пользователя =-");
+        String userLogin = getLogin();
+        int index;
+        if ((index = findUserReturnIndex(userLogin)) >= 0) {
+            users.get(index).setLogin(getLogin());
         } else {
-            System.out.println("Пользователь НЕ существует");
+            System.out.println("Нет такого пользователя.");
         }
-        return findUser(login);
     }
 
     private static User findUser(String login) {
@@ -82,23 +82,27 @@ public class App {
     }
 
     private static int findUserReturnIndex(String login) {
-        int index = -1;
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getLogin().equals(login)) {
-                return index;
+                return i;
             }
         }
-        return index;
+        return -1;
     }
 
     private static void deleteUser() {
         System.out.println("-= Удаление существующего пользователя =-");
-
+        String userLogin = getLogin();
+        int index;
+        if ((index = findUserReturnIndex(userLogin)) >= 0) {
+            users.remove(index);
+        } else {
+            System.out.println("Нет такого пользователя.");
+        }
     }
 
     private static void addUser() {
         String login = getLogin();
-
         String password = getPassword();
         if (!login.isBlank() && password != null) {
             User user = new User(login, password);
@@ -109,9 +113,8 @@ public class App {
     }
 
     private static String getLogin() {
-        System.out.print("Введите логип пользователя:\t");
-        String login = scanner.nextLine();
-        return login;
+        System.out.print("Введите логин пользователя:\t");
+        return scanner.nextLine();
     }
 
     private static String getPassword() {
@@ -125,5 +128,15 @@ public class App {
             return null;
         }
         return password;
+    }
+
+    private static void isUserPresent() {
+        System.out.println("-= Проверка существующего пользователя =-");
+        String login = getLogin();
+        if (findUser(login) != null) {
+            System.out.println("Пользователь существует");
+        } else {
+            System.out.println("Пользователь НЕ существует");
+        }
     }
 }
