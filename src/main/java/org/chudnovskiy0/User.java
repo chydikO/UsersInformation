@@ -1,13 +1,15 @@
 package org.chudnovskiy0;
 
 import lombok.*;
-@RequiredArgsConstructor
+
+
+@AllArgsConstructor
 @Setter
 @Getter
 @ToString
 @EqualsAndHashCode
 
 public class User {
-    private final String login;
-    private final String password;
+    private String login;
+    private String password;
 }
