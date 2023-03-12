@@ -33,7 +33,7 @@ public class App {
                     case 7 -> exit();
                 }
             } catch (Exception ex) {
-                System.out.println("Please enter an integer value between 1 and " + menu.length);
+                System.out.println("Пожалуйста сделайте свой выбор от 1 до " + menu.length);
                 scanner.next();
             }
         } while (option > menu.length || option < 1);
